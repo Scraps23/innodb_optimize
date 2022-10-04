@@ -34,7 +34,7 @@ def main(memory=None, percent=75, file='/etc/mysql/my.cnf', commit=False):
             chunk_calc = chunk_size / pool_size * 100
             if (chunk_size % 1 == 0) and (chunk_calc <= 5 and chunk_calc >= 2):
                 return int(instances), int(chunk_size)
-        return 1, pool_size
+        return 1, pool_size # Defaults to a single pool at the maximum pool size
 
     def config_check(file):
         return exists(file)
@@ -92,12 +92,21 @@ def main(memory=None, percent=75, file='/etc/mysql/my.cnf', commit=False):
                     _exit(1)
                 _exit(0)
     
-    mem_kb = dict((i.split()[0].rstrip(':'),int(i.split()[1])) for i in open('/proc/meminfo').readlines())['MemTotal']
-    if memory and memory <= mem_kb:
-        mem_kb = memory
+    sys_mem = dict((i.split()[0].rstrip(':'),int(i.split()[1])) for i in open('/proc/meminfo').readlines())['MemTotal']
+    
+    ## Validate memory input if it was input
+    if memory and 0 > int(memory) <= sys_mem:
+        mem_kb = int(memory)
+    else:
+        mem_kb = sys_mem # Sets to full system amount if not input
+    
+    ## Validate percent input
+    assert 0 < percent < 100, "Invalid percentage, value must lie within 0-100"
+    if percent >= 95 and (mem_kb // sys_mem >= 90):
+        print('Warning: High memory usage can be harmful to system stability.')
     
     data = {}
-    data['innodb_buffer_pool_size'] = calc_pool_size(mem_kb, percent)
+    data['innodb_buffer_pool_size'] = calc_pool_size(mem_kb, int(percent))
     data['innodb_buffer_pool_instances '], data['innodb_buffer_pool_chunk_size '] = calc_pool_dependents(data['innodb_buffer_pool_size'])
     new_config = config_update(file, **data)
 
@@ -108,5 +117,3 @@ def main(memory=None, percent=75, file='/etc/mysql/my.cnf', commit=False):
 
 if __name__ == '__main__':
     app = fire.Fire(main)
-    
-    

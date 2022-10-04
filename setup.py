@@ -15,7 +15,7 @@ setup(
     maintainer="Ben Nassif",
     maintainer_email="bennassif@gmail.com",
     url="https://www.linkedin.com/in/ben-nassif/",
-    classifiers=(
+    classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
@@ -27,7 +27,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
-    ),
+    ],
     license=read("LICENSE"),
     packages=['bootstrap',],
     install_requires=["fire",],

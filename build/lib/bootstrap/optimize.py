@@ -34,7 +34,7 @@ def main(memory=None, percent=75, file='/etc/mysql/my.cnf', commit=False):
             chunk_calc = chunk_size / pool_size * 100
             if (chunk_size % 1 == 0) and (chunk_calc <= 5 and chunk_calc >= 2):
                 return int(instances), int(chunk_size)
-        return 1, pool_size
+        return 1, pool_size # Defaults to a single pool at the maximum pool size
 
     def config_check(file):
         return exists(file)
