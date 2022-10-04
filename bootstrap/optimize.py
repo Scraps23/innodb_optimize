@@ -80,14 +80,14 @@ def main(memory=None, percent=75, file='/etc/mysql/my.cnf', commit=False):
         while True:
             resp = input('Configuration has been applied. Restart MySQL now?\n[y] Yes  [n] No  [s] Schedule : ')
             if resp[0].lower() == 'y':
-                system('service mysqld restart')
+                system('service mysql restart')
                 _exit(0)
             elif resp[0].lower() == 'n':
                 print('MySQL reboot declined. You will need to restart the service for changes to take effect.')
                 _exit(0)
             elif resp[0].lower() == 's':
                 time = input('Enter time to restart MySQL\n(e.g. tomorrow 10am, now + 30 minutes, etc) : ')
-                if check_output(f'echo "service mysqld restart" | at {time}', shell=True) == 1:
+                if check_output(f'echo "service mysql restart" | at {time}', shell=True) == 1:
                     print(f'Failed to schedule ')
                     _exit(1)
                 _exit(0)
