@@ -6,7 +6,7 @@ This package is meant to be used to automatically optimize mysql configurations 
 
 ### Installation
 ```bash
-$ python -m pip install git+'https://github.com/Scraps23/innodb_optimize.git'
+python -m pip install git+'https://github.com/Scraps23/innodb_optimize.git'
 ```
 
 ### Usage
