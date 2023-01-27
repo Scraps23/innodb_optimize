@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from setuptools import setup
+import re
 
 def read(filename):
     with open(filename, encoding='utf8', errors='ignore') as file:
