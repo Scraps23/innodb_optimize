@@ -16,7 +16,7 @@ setup(
     name="innodb_optimize",
     version=get_version(),
     description="Automated optimizer for MySQL InnoDB configurations",
-    long_description=read("README.rst"),
+    long_description=read("README.md"),
     author="Ben Nassif",
     author_email="bennassif@gmail.com",
     maintainer="Ben Nassif",
