@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from setuptools import setup
+import re
 
 def read(filename):
     with open(filename, encoding='utf8', errors='ignore') as file:
@@ -26,7 +27,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
-        "Operating System :: OS Independent",
+        "Operating System :: Unix",
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: System :: Systems Administration",
         "Programming Language :: Python",
@@ -37,4 +38,5 @@ setup(
     license=read("LICENSE"),
     packages=['bootstrap',],
     install_requires=["fire",],
+    scripts=['bootstrap/innodb-optimize',]
 )
