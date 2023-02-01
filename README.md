@@ -1,5 +1,5 @@
 # InnoDB Optimize
-[![Pypi](https://img.shields.io/pypi/v/dbschema.svg)](https://pypi.org/project/innodb-optimize)
+[![Pypi](https://img.shields.io/pypi/v/innodb-optimize)](https://pypi.org/project/innodb-optimize)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://raw.githubusercontent.com/Scraps23/innodb_optimize/main/LICENSE)
 ![GitHub Release Date](https://img.shields.io/github/release-date/Scraps23/innodb_optimize)
 
