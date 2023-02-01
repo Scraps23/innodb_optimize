@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 from setuptools import setup
 import re
+import pypandoc
+
+long_description = pypandoc.convert_file('README.md', 'rst')
+
 
 def read(filename):
     with open(filename, encoding='utf8', errors='ignore') as file:
-        return file.read()
+        return "\n" + file.read()
+
 
 def get_version() -> str:
     """Get the version string from the module's __init__ file."""
@@ -12,11 +17,14 @@ def get_version() -> str:
         version = re.search(r'[\'"]\S\d*.\d*.\d*\S*[\'"]', init.read())
         return version.group().strip('"').strip("'")
 
+
 setup(
     name="innodb_optimize",
     version=get_version(),
     description="Automated optimizer for MySQL InnoDB configurations",
-    long_description=read("README.md"),
+    long_description_content_type='text/x-rst',
+    #long_description=read("README.rst"),
+    long_description=long_description,
     author="Ben Nassif",
     author_email="bennassif@gmail.com",
     maintainer="Ben Nassif",
@@ -28,6 +36,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         "Operating System :: Unix",
+        "Operating System :: POSIX :: Linux",
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: System :: Systems Administration",
         "Programming Language :: Python",
