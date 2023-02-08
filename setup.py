@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 from setuptools import setup
 import re
-import pypandoc
-
-long_description = pypandoc.convert_file('README.md', 'rst')
 
 
 def read(filename):
     with open(filename, encoding='utf8', errors='ignore') as file:
         return "\n" + file.read()
+
+
+try:
+    import pypandoc
+    long_description = pypandoc.convert_file('README.md', 'rst')
+except ModuleNotFoundError:
+    long_description = read('README.md')
 
 
 def get_version() -> str:
@@ -23,7 +27,6 @@ setup(
     version=get_version(),
     description="Automated optimizer for MySQL InnoDB configurations",
     long_description_content_type='text/x-rst',
-    #long_description=read("README.rst"),
     long_description=long_description,
     author="Ben Nassif",
     author_email="bennassif@gmail.com",
