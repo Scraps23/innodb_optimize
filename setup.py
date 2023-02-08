@@ -49,6 +49,6 @@ setup(
     ],
     license=read("LICENSE"),
     packages=['bootstrap',],
-    install_requires=["fire",],
+    install_requires=["fire","psutil"],
     scripts=['bootstrap/innodb-optimize',]
 )
