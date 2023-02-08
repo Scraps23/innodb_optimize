@@ -1,10 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 from subprocess import check_output, CalledProcessError
 from os.path import exists
 from os import _exit
 from sys import argv
 from os import system
+import psutil
 
 if exists('/etc/apt'):  # apt handling
     try:
@@ -19,11 +20,11 @@ elif exists('/etc/yum.d'):  # yum handling
 
 
 def calc_pool_size(memory, percent):
-    counter = memory
     while True:
-        counter -= 1
-        if (((counter * 1000 * 1000) * (percent / 100)) % 1 == 0) and (((counter * 1000) * 0.75) % 1 == 0):
-            return int(counter * 1000)
+        step = memory * (percent / 100)
+        if step % 1 == 0:
+            return int(step)
+        step -= 1
 
 
 def calc_pool_dependents(pool_size):
@@ -60,7 +61,7 @@ def config_update(file, **config):
         file_lines.append('[mysqld]')
     for key, value in config.items():
         for line in file_lines:
-            if line.find(key) >= 0:
+            if (line.find(key) >= 0) or line.find(key.replace('_', '-')) >= 0:
                 file_lines.remove(line)
         file_lines.append(f'{key} = {value}')
     return file_lines
@@ -97,20 +98,20 @@ def mysql_restart():
 
 
 def main(memory=None, percent=75, file='/etc/mysql/my.cnf', commit=False):
-    sys_mem = dict((i.split()[0].rstrip(':'), int(i.split()[1])) for i in open('/proc/meminfo').readlines())['MemTotal']
+    sys_mem = psutil.virtual_memory().total
 
     # Validate memory input if it was input
-    if memory and 0 > int(memory) <= sys_mem:
-        mem_kb = int(memory)
+    if memory and (0 > int(memory) <= sys_mem):
+        usable_mem = int(memory)
     else:
-        mem_kb = sys_mem  # Sets to full system amount if not input
+        usable_mem = sys_mem  # Sets to full system amount if not input
 
     # Validate percent input
     assert 0 < percent < 100, "Invalid percentage, value must lie within 0-100"
-    if percent >= 95 and (mem_kb // sys_mem >= 90):
+    if percent >= 95 or (usable_mem // sys_mem >= 90):
         print('Warning: High memory usage can be harmful to system stability.')
 
-    data = dict({'innodb_buffer_pool_size': calc_pool_size(mem_kb, int(percent))})
+    data = dict({'innodb_buffer_pool_size': calc_pool_size(usable_mem, int(percent))})
     data['innodb_buffer_pool_instances '], data['innodb_buffer_pool_chunk_size '] =\
         calc_pool_dependents(data['innodb_buffer_pool_size'])
     new_config = config_update(file, **data)
