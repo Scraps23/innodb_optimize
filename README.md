@@ -1,7 +1,7 @@
 # InnoDB Optimize
 [![Pypi](https://img.shields.io/pypi/v/innodb-optimize)](https://pypi.org/project/innodb-optimize)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://raw.githubusercontent.com/Scraps23/innodb_optimize/main/LICENSE)
-![GitHub Release Date](https://img.shields.io/github/release-date/Scraps23/innodb_optimize)
+[![GitHub Release Date](https://img.shields.io/github/release-date/Scraps23/innodb_optimize)](https://github.com/Scraps23/innodb_optimize)
 
 `innodb-optimize` is a package for automatically calucalating optimized InnoDB configurations, and generating an updated `my.cnf` file with those values.
 
